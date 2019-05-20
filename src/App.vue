@@ -13,19 +13,21 @@
       v-bind:highScore="highScore"
       v-bind:time="time"
     />
-    <Moles />
+    <div class="moles-container gameActive">
+      <Mole v-for="index in 4" v-bind:key="index" />
+    </div>
   </div>
 </template>
 
 <script>
 import Counter from './components/Counter';
-import Moles from './components/Moles';
+import Mole from './components/Mole';
 
 export default {
   name: 'App',
   components: {
     Counter,
-    Moles,
+    Mole,
   },
   data: function() {
     return {
