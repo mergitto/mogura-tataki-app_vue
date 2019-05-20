@@ -48,16 +48,15 @@ export default {
       moles: [false, false, false, false],
       intervalId: Number,
       isGameActive: false,
-      clickCount: 0,
+      allClickCount: 0,
       clickAccuracyRate: 0,
-      failedStrikeCount: 0,
     }
   },
   methods: {
     initializeGame: function() {
       this.time = this.limitSeconds,
       this.score = 0;
-      this.clickCount = 0;
+      this.allClickCount = 0;
     },
     startGame: function() {
       this.initializeGame();
@@ -77,10 +76,8 @@ export default {
         }
         this.activateRandomMole();
 
-        if (this.clickCount + this.failedStrikeCount !== 0){
-          // TODO: 若干バグあり
-          // failedStrickCount(モグラさんを叩き損ねた回数)がうまくカウントできない
-          this.clickAccuracyRate = Math.round((this.score / (this.clickCount + this.failedStrikeCount)) * 100, 2);
+        if (this.allClickCount > 0) {
+          this.clickAccuracyRate = Math.round((this.score / this.allClickCount) * 100, 2);
         }
 
         this.time--;
@@ -102,7 +99,7 @@ export default {
       this.moles[index] = false;
     },
     handleClickCount: function() {
-      this.clickCount++;
+      this.allClickCount++;
     },
     startMoles: function() {
       this.isGameActive = true;
@@ -130,7 +127,6 @@ export default {
       const index = this.getRandomInt(0, 4);
       if (this.moles[index]) {
         this.moles[index] = false;
-        this.failedStrikeCount++;
       } else {
         this.inActivateMole();
       }
