@@ -2,22 +2,26 @@
   <div class="counters-container">
     <div class="counter">
       <h2>Score:</h2>
-      <h1>0</h1>
+      <h3>{{ score }}</h3>
     </div>
     <div class="counter">
       <h2>High Score:</h2>
-      <h1>0</h1>
+      <h3>{{ highScore }}</h3>
     </div>
     <div class="counter">
       <h2>Timer:</h2>
-      <h1>0</h1>
+      <h3>{{ time }}</h3>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  
+  props: {
+    score: Number,
+    highScore: Number,
+    time: Number,
+  },
 }
 </script>
 

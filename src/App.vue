@@ -8,7 +8,11 @@
     >
       Start Game
     </button>
-    <Counter />
+    <Counter
+      v-bind:score="score"
+      v-bind:highScore="highScore"
+      v-bind:time="time"
+    />
     <Moles />
   </div>
 </template>
@@ -22,7 +26,15 @@ export default {
   components: {
     Counter,
     Moles,
-  }
+  },
+  data: function() {
+    return {
+      score: 0,
+      highScore: 0,
+      time: 0,
+      isMoles: [false, false, false, false],
+    }
+  },
 };
 </script>
 
