@@ -1,5 +1,8 @@
 <template>
-  <div class="mole-container inactive">
+  <div
+    class="mole-container"
+    v-bind:class="{ active: this.isActive, inactive: !this.isActive }"
+  >
     <div class="mole-image-container">
       <img class="mole" src="../assets/mole.png" alt="mole"/>
     </div>
@@ -10,6 +13,11 @@
 <script>
 export default {
   name: 'Mole',
+  data: function() {
+    return {
+      isActive: true,
+    }
+  },
 }
 </script>
 
