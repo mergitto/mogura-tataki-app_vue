@@ -19,7 +19,7 @@
         v-for="(isMoleActive, index) in moles"
         v-bind:key="index"
         v-bind:isActive="isMoleActive"
-        v-on:strike="handleStrike()"
+        v-on:strike="handleStrike(index)"
       />
     </div>
   </div>
@@ -79,8 +79,9 @@ export default {
         this.highScore = this.score;
       }
     },
-    handleStrike: function() {
+    handleStrike: function(index) {
       this.score++;
+      this.moles[index] = false;
     },
     startMoles: function() {
       this.isGameActive = true;
@@ -89,7 +90,23 @@ export default {
       this.isGameActive = false;
     },
     activateRandomMole: function() {
-      this.moles[this.getRandomInt(0, 4)] = true;
+      const randomInt = this.getRandomInt(0, 4);
+      this.moles[randomInt] = true;
+      this.inActivateMole(randomInt);
+      this.activateDelayRandomMole();
+    },
+    activateDelayRandomMole: function() {
+      // 70%の確率で0.6sec遅れて出現するもぐら
+      if (Math.random() > 0.3) {
+        setTimeout(() => {
+          this.moles[this.getRandomInt(0, 4)] = true;
+        }, 600);
+      }
+    },
+    inActivateMole: function(index) {
+      setTimeout(() => {
+        this.moles[index] = false;
+      }, 2000); 
     },
     getRandomInt: function(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
