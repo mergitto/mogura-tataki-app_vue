@@ -15,13 +15,16 @@
       v-bind:highScore="highScore"
       v-bind:time="time"
     />
-    <div class="moles" v-bind:class="{ 'game-active': isGameActive }">
+    <div class="moles" v-bind:class="{ 'game-active': isGameActive }" v-on:click="handleClickCount()">
       <Mole
         v-for="(isMoleActive, index) in moles"
         v-bind:key="index"
         v-bind:isActive="isMoleActive"
         v-on:strike="handleStrike(index)"
       />
+    </div>
+    <div class="whackamole-footer">
+      Average strike MOGURA: {{ this.clickAccuracyRate }} %
     </div>
   </div>
 </template>
@@ -45,12 +48,16 @@ export default {
       moles: [false, false, false, false],
       intervalId: Number,
       isGameActive: false,
+      clickCount: 0,
+      clickAccuracyRate: 0,
+      failedStrikeCount: 0,
     }
   },
   methods: {
     initializeGame: function() {
       this.time = this.limitSeconds,
       this.score = 0;
+      this.clickCount = 0;
     },
     startGame: function() {
       this.initializeGame();
@@ -65,7 +72,17 @@ export default {
     },
     startTimer: function() {
       this.intervalId = setInterval(() => {
+        if (this.activateMoleLength() >= 2) {
+          this.inActivateMole();
+        }
         this.activateRandomMole();
+
+        if (this.clickCount + this.failedStrikeCount !== 0){
+          // TODO: 若干バグあり
+          // failedStrickCount(モグラさんを叩き損ねた回数)がうまくカウントできない
+          this.clickAccuracyRate = Math.round((this.score / (this.clickCount + this.failedStrikeCount)) * 100, 2);
+        }
+
         this.time--;
         if (this.time <= 0) {
           this.endGame();
@@ -84,30 +101,39 @@ export default {
       this.score++;
       this.moles[index] = false;
     },
+    handleClickCount: function() {
+      this.clickCount++;
+    },
     startMoles: function() {
       this.isGameActive = true;
     },
     stopMoles: function() {
       this.isGameActive = false;
     },
+    activateMoleLength: function() {
+      return this.moles.filter(mole => mole).length;
+    },
     activateRandomMole: function() {
       const randomInt = this.getRandomInt(0, 4);
-      this.moles[randomInt] = true;
-      this.inActivateMole(randomInt);
-      this.activateDelayRandomMole();
-    },
-    activateDelayRandomMole: function() {
-      // 70%の確率で0.6sec遅れて出現するもぐら
-      if (Math.random() > 0.3) {
-        setTimeout(() => {
-          this.moles[this.getRandomInt(0, 4)] = true;
-        }, 600);
+      const activeMoleLength = this.activateMoleLength();
+      if (activeMoleLength == this.moles.length) {
+        return;
+      }
+
+      if (this.moles[randomInt]){
+        this.activateRandomMole();
+      } else {
+        this.moles[randomInt] = true;
       }
     },
-    inActivateMole: function(index) {
-      setTimeout(() => {
+    inActivateMole: function() {
+      const index = this.getRandomInt(0, 4);
+      if (this.moles[index]) {
         this.moles[index] = false;
-      }, 2000); 
+        this.failedStrikeCount++;
+      } else {
+        this.inActivateMole();
+      }
     },
     getRandomInt: function(min, max) {
       return Math.floor(Math.random() * (max - min)) + min;
@@ -141,5 +167,9 @@ export default {
 
 .moles.game-active {
   opacity: 1;
+}
+
+.whackamole-footer {
+  margin-top: 50px;
 }
 </style>
