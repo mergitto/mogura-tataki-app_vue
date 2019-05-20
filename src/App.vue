@@ -15,7 +15,7 @@
       v-bind:time="time"
     />
     <div class="moles-container gameActive">
-      <Mole v-for="index in 4" v-bind:key="index" />
+      <Mole v-for="index in 4" v-bind:key="index" v-on:strike="handleStrike()" />
     </div>
   </div>
 </template>
@@ -56,6 +56,9 @@ export default {
     },
     stopTimer: function() {
       clearInterval(this.intervalId);
+    },
+    handleStrike: function() {
+      this.score++;
     },
   },
 };
