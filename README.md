@@ -1,4 +1,6 @@
 # mogura-tataki-app_vue
+もぐらは悪いことはしていない。
+だが、人間はもぐらを叩きたがる…
 
 ## Project setup
 ```
