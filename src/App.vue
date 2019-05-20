@@ -6,6 +6,7 @@
     <button
       class="start-game"
       v-on:click="startGame"
+      v-bind:disabled="isGameActive"
     >
       Start Game
     </button>
