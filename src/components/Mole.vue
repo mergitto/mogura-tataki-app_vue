@@ -4,7 +4,7 @@
     v-bind:class="{ active: this.isActive, inactive: !this.isActive }"
   >
     <div class="mole-image-container">
-      <img class="mole" src="../assets/mole.png" alt="mole"/>
+      <img v-on:click="handleStrike()" class="mole" src="../assets/mole.png" alt="mole"/>
     </div>
     <img class="dirt" src="../assets/dirt.svg" alt="mole dirt"/>
   </div>
@@ -16,6 +16,11 @@ export default {
   data: function() {
     return {
       isActive: true,
+    }
+  },
+  methods: {
+    handleStrike: function() {
+      console.log("もぐらを叩いて楽しいですか？");
     }
   },
 }
