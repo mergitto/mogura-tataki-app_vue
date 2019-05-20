@@ -1,28 +1,47 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="whackamole">
+    <h1 class="logo">
+      Whack-a-mole!
+    </h1>
+    <button
+      class="start-game"
+    >
+      Start Game
+    </button>
+    <Counter />
+    <Moles />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Counter from './components/Counter';
+import Moles from './components/Moles';
 
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-    HelloWorld
+    Counter,
+    Moles,
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.whackamole {
+  font-family: 'Bungee', sans-serif;
+  max-width: 960px;
+  margin: auto;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+
+.start-game {
+  font-family: 'Bungee', sans-serif;
+  padding: 20px;
+  border-radius: 3px;
+  border: 0;
+  background-color: #52b1d6;
+  color: #fff;
+  font-size: 1em;
+  cursor: pointer;
 }
 </style>
