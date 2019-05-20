@@ -4,7 +4,12 @@
     v-bind:class="{ active: this.isActive, inactive: !this.isActive }"
   >
     <div class="mole-image-container">
-      <img v-on:click="$emit('strike')" class="mole" src="../assets/mole.png" alt="mole"/>
+      <img
+        v-on:click="$emit('strike')"
+        class="mole"
+        src="../assets/mole.png"
+        alt="mole"
+      />
     </div>
     <img class="dirt" src="../assets/dirt.svg" alt="mole dirt"/>
   </div>
@@ -13,10 +18,8 @@
 <script>
 export default {
   name: 'Mole',
-  data: function() {
-    return {
-      isActive: true,
-    }
+  props: {
+    isActive: Boolean,
   },
   methods: {
   },

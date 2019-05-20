@@ -14,8 +14,13 @@
       v-bind:highScore="highScore"
       v-bind:time="time"
     />
-    <div class="moles-container gameActive">
-      <Mole v-for="index in 4" v-bind:key="index" v-on:strike="handleStrike()" />
+    <div class="moles" v-bind:class="{ 'game-active': isGameActive }">
+      <Mole
+        v-for="(isMoleActive, index) in moles"
+        v-bind:key="index"
+        v-bind:isActive="isMoleActive"
+        v-on:strike="handleStrike()"
+      />
     </div>
   </div>
 </template>
@@ -34,31 +39,60 @@ export default {
     return {
       score: 0,
       highScore: 0,
+      limitSeconds: 15,
       time: 15,
-      isMoles: [false, false, false, false],
+      moles: [false, false, false, false],
       intervalId: Number,
+      isGameActive: false,
     }
   },
   methods: {
+    initializeGame: function() {
+      this.time = this.limitSeconds,
+      this.score = 0;
+    },
     startGame: function() {
+      this.initializeGame();
       this.startTimer();
+      this.startMoles();
     },
     endGame: function() {
       this.stopTimer();
+      this.stopMoles();
+      this.setHighScore();
+      this.moles = [false, false, false, false];
     },
     startTimer: function() {
       this.intervalId = setInterval(() => {
+        this.activateRandomMole();
         this.time--;
         if (this.time <= 0) {
-          this.stopTimer();
+          this.endGame();
         }
       }, 1000);
     },
     stopTimer: function() {
       clearInterval(this.intervalId);
     },
+    setHighScore: function() {
+      if (this.highScore < this.score) {
+        this.highScore = this.score;
+      }
+    },
     handleStrike: function() {
       this.score++;
+    },
+    startMoles: function() {
+      this.isGameActive = true;
+    },
+    stopMoles: function() {
+      this.isGameActive = false;
+    },
+    activateRandomMole: function() {
+      this.moles[this.getRandomInt(0, 4)] = true;
+    },
+    getRandomInt: function(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
     },
   },
 };
@@ -81,5 +115,13 @@ export default {
   color: #fff;
   font-size: 1em;
   cursor: pointer;
+}
+
+.moles {
+  opacity: 0.5;
+}
+
+.moles.game-active {
+  opacity: 1;
 }
 </style>
